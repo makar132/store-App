@@ -1,4 +1,4 @@
-package com.example.newmobileapp.ui.theme
+package com.example.newmobileapp.presentation.theme
 
 import android.app.Activity
 import android.os.Build
