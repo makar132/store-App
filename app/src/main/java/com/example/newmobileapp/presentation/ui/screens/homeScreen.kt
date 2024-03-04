@@ -17,11 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.newmobileapp.presentation.ui.components.Productcard
 import com.example.newmobileapp.presentation.viewmodels.CartViewmodel
+import com.example.newmobileapp.presentation.viewmodels.HomeScreenViewmodel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen (){
-    val viewmodel:CartViewmodel= viewModel()
+    val viewmodel:HomeScreenViewmodel = viewModel()
     val listState = rememberLazyListState()
    val products by viewmodel.products.collectAsState()
     Scaffold(modifier = Modifier.fillMaxSize()){

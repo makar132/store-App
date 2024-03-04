@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.newmobileapp.presentation.theme.DigitalStoreAppTheme
+import com.example.newmobileapp.presentation.ui.screens.AuthScreen
 import com.example.newmobileapp.presentation.ui.screens.HomeScreen
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen()
+                    AuthScreen()
                 }
             }
         }
