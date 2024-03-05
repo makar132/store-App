@@ -18,27 +18,27 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class HomeScreenViewmodel(): ViewModel(), KoinComponent {
 
-    private val _products:MutableStateFlow< MutableList<Product>> = MutableStateFlow(mutableListOf())
+    private val _products:MutableStateFlow< List<Product>> = MutableStateFlow(listOf())
     val products=_products.asStateFlow()
+    private val _categories:MutableStateFlow< List<String>> = MutableStateFlow(listOf())
+    val categories=_categories.asStateFlow()
+
     val remoterepo : RemoteRepoImplementaion by inject()
     init{
+        getProducts()
+        getCategories()
 
-        _products.value.add(
-            Product(
-            id = 2, title = "first", category ="a"
-            )
-        )
+    }
 
-        _products.value.add(Product(
-            id = 3, title = "second", category ="b"
-        ))
-
-
-
+    fun getProducts(){
         viewModelScope.launch{
-           _products.value=remoterepo.getProducts().toMutableList()
+            _products.value=remoterepo.getProducts()
         }
-
-}
+    }
+    fun getCategories(){
+        viewModelScope.launch{
+            _categories.value=remoterepo.getCategories()
+        }
+    }
 
 }

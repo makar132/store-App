@@ -1,5 +1,6 @@
 package com.example.newmobileapp.presentation.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.OutlinedButton
@@ -17,9 +18,9 @@ import com.example.newmobileapp.presentation.viewmodels.authviewmodel
 fun AuthScreen(){
     val (username, setUsername) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
-    val (token,setToken) = remember { mutableStateOf("empty token") }
     val viewmodel:authviewmodel = viewModel()
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    val (token,setToken) = remember { mutableStateOf(viewmodel.token) }
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
         OutlinedTextField(value =username , onValueChange ={setUsername(it)} )
         OutlinedTextField(value =password , onValueChange ={setPassword(it)} )
         OutlinedButton(onClick = {

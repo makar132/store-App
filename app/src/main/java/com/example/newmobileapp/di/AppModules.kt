@@ -1,4 +1,5 @@
 package com.example.newmobileapp.di
+import com.example.newmobileapp.data.remote.API.authApi
 import com.example.newmobileapp.data.remote.API.productsApi
 import com.example.newmobileapp.data.remote.Base_Url
 import com.example.newmobileapp.data.repository.RemoteRepoImplementaion
@@ -12,13 +13,17 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 val appModules = module {
-single <productsApi>{
+single{
     Retrofit.Builder()
         .baseUrl(Base_Url)
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
-        .create(productsApi::class.java)
-        }
+}
+    single { get<Retrofit>().create(productsApi::class.java)  }
+    single {
+        get<Retrofit>().create(authApi::class.java)
+    }
+
     single {  RemoteRepoImplementaion(api = get()) } bind RemoteRepo::class
 
     //viewModel { HomeScreenViewmodel() }
