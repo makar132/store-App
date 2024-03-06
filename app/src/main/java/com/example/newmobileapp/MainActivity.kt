@@ -21,6 +21,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.newmobileapp.presentation.theme.DigitalStoreAppTheme
 import com.example.newmobileapp.presentation.ui.screens.AuthScreen
+import com.example.newmobileapp.presentation.ui.screens.CartScreen
+import com.example.newmobileapp.presentation.ui.screens.FavoritesScreen
 import com.example.newmobileapp.presentation.ui.screens.HomeScreen
 import com.example.newmobileapp.util.NavActions
 import com.example.newmobileapp.util.NavRoutes
@@ -39,7 +41,7 @@ class MainActivity : ComponentActivity() {
                 val navActions = remember(navController) { NavActions(navController) }
                 val coroutineScope = rememberCoroutineScope()
 
-                MainScreen(navActions,coroutineScope)
+                MainScreen(navActions, coroutineScope)
 
             }
         }
@@ -62,18 +64,27 @@ fun MainScreen(navActions: NavActions, coroutineScope: CoroutineScope) {
             startDestination = NavRoutes.HOME
         ) {
             composable(NavRoutes.HOME) {
-                HomeScreen(currentRoute,navActions,coroutineScope)
+                HomeScreen(
+                    currentRoute = currentRoute,
+                    navActions = navActions,
+                    coroutineScope = coroutineScope
+                )
             }
             composable(NavRoutes.CART) {
-                AuthScreen()
+                CartScreen(
+                    currentRoute = currentRoute,
+                    navActions = navActions,
+                    coroutineScope = coroutineScope
+                )
             }
             composable(NavRoutes.FAVORITES) {
-                // TODO:
+                FavoritesScreen(
+                    currentRoute = currentRoute,
+                    navActions = navActions,
+                    coroutineScope = coroutineScope
+                )
             }
-            composable(NavRoutes.FAVORITES) {
-                // TODO:
 
-            }
         }
     }
 }

@@ -26,12 +26,16 @@ class NavActions(private val navHostController: NavHostController) {
 
     }
     val navigateToCart: () -> Unit = {
-        navController.navigate(NavRoutes.CART)
+        navController.navigate(NavRoutes.CART){
+            popUpTo(NavRoutes.HOME)
+        }
 
     }
     val navigateToFavorites: () -> Unit = {
         navController.navigate(NavRoutes.FAVORITES)
-
+        {
+            popUpTo(NavRoutes.HOME)
+        }
     }
 
 }

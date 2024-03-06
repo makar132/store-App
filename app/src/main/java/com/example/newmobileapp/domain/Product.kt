@@ -6,5 +6,7 @@ data class  Product(
     val price:Double=0.0,
     val description:String="...",
     val category:String="...",
-    val image:String="..."
+    val image:String="...",
+    val addedToFavorites:Boolean=false,
+    val addedToCart:Boolean=false
 )

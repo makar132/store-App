@@ -13,37 +13,17 @@ import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class CartViewmodel : ViewModel(), KoinComponent {
+class FavoritesViewmodel : ViewModel(), KoinComponent {
 
 
-    private val _cart: MutableStateFlow<MutableList<CartProduct>> =
-        MutableStateFlow(mutableListOf())
-    private var cart = _cart.asStateFlow()
 
     private val coreViewmodel:CoreViewmodel by inject()
-    init {
 
-    }
-
-    fun addToCart(cartProduct: CartProduct) {
-        coreViewmodel.addToCart(_cart,cartProduct)
-    }
-
-    fun removeFromCart(cartProduct: CartProduct) {
-        coreViewmodel.removeFromCart(_cart,cartProduct)
-    }
-
-
-    fun getCart(): StateFlow<MutableList<CartProduct>> {
-        return cart
-    }
-    fun changeProductFavoriteState(productId:Int)
-    {
-        coreViewmodel.changeProductFavoriteState(productId)
-    }
     fun getProducts(): StateFlow<List<Product>> {
         return coreViewmodel.getProductList()
     }
 
-
+    fun removeFromFavorites(product: Product){
+        coreViewmodel.changeProductFavoriteState(product.id)
+    }
 }

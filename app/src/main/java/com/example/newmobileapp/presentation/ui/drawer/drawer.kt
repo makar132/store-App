@@ -6,15 +6,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -22,15 +21,17 @@ import com.example.newmobileapp.R
 import com.example.newmobileapp.domain.Product
 import com.example.newmobileapp.util.NavActions
 import com.example.newmobileapp.util.NavRoutes
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
-fun LeftDrawer(
-    products: List<Product>,
+fun Drawer(
+    productsFlow: StateFlow<List<Product>>,
     currentRoute: String,
     navActions: NavActions,
     closeLeftDrawer: () -> Unit
 ) {
+    val products by productsFlow.collectAsState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -41,8 +42,8 @@ fun LeftDrawer(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
         ) {
-//            val itemsInCart = products.filter { it.addedToCart }
-//            val favoriteItems = products.filter { it.addedAsFavorite }
+            val itemsInCart = products.filter { it.addedToCart }
+            val favoriteItems = products.filter { it.addedToFavorites }
 
             Spacer(modifier = Modifier.height(24.dp))
             Text(
@@ -82,7 +83,7 @@ fun LeftDrawer(
                     closeLeftDrawer()
                 },
                 shape = RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp),
-                badge = { Text(text ="+") },
+                badge = { Text(text =itemsInCart.size.toString()) },
                 modifier = Modifier.padding(end = 16.dp, top = 12.dp, bottom = 12.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -100,7 +101,7 @@ fun LeftDrawer(
                     closeLeftDrawer()
                 },
                 shape = RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp),
-                //badge = { Text(text = favoriteItems.size.toString()) },
+                badge = { Text(text = favoriteItems.size.toString()) },
                 modifier = Modifier.padding(end = 16.dp, top = 12.dp, bottom = 12.dp)
             )
         }
