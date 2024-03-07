@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">new mobile app</string>
+    <string name="app_name">my Store</string>
+    <!-- Strings related to login -->
 </resources>
