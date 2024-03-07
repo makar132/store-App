@@ -32,8 +32,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.newmobileapp.domain.Product
+import com.example.newmobileapp.presentation.ui.appbar.TopBar
 import com.example.newmobileapp.presentation.ui.components.Productcard
-import com.example.newmobileapp.presentation.ui.drawer.Drawer
+import com.example.newmobileapp.presentation.ui.utils.Drawer
 import com.example.newmobileapp.presentation.viewmodels.CartViewmodel
 import com.example.newmobileapp.util.NavActions
 import kotlinx.coroutines.CoroutineScope
@@ -79,39 +80,18 @@ fun CartScreen(
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            topBar = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(modifier = Modifier.padding(8.dp), onClick = {
-                        coroutineScope.launch {
-                            withContext(Dispatchers.Main) {
-                                drawerState.open()
-                            }
-                        }
-
-                    }) {
-                        Icon(imageVector = Icons.Outlined.Menu, contentDescription = null)
-                    }
-                    Text(
-                        modifier = Modifier.padding(start = 36.dp), text = "Cart",
-                        style = MaterialTheme.typography.titleLarge
-                    )
-
-                }
-
-
-            },
 
             ) {
             Column(
-                modifier = Modifier.padding(top = 80.dp)
+                modifier = Modifier.fillMaxSize()
             ) {
-
+                TopBar("My Cart") {
+                    coroutineScope.launch {
+                        withContext(Dispatchers.Main) {
+                            drawerState.open()
+                        }
+                    }
+                }
                 Box()
                 {
                     LazyColumn(
@@ -120,13 +100,13 @@ fun CartScreen(
 
                         ) {
                         items(cart, key = { it.productId }) {
-                            CartScreenProductCard(product = products.find { product -> product.id == it.productId } ,
-                                onClick = fun(){
-                                viewmodel.removeFromCart(it)
-                            },
-                                onFavoriteClick = fun(){
+                            CartScreenProductCard(product = products.find { product -> product.id == it.productId },
+                                onClick = fun() {
+                                    viewmodel.removeFromCart(it)
+                                },
+                                onFavoriteClick = fun() {
                                     viewmodel.changeProductFavoriteState(it.productId)
-                        })
+                                })
                         }
                     }
 

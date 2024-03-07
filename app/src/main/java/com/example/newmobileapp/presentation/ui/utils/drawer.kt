@@ -1,4 +1,4 @@
-package com.example.newmobileapp.presentation.ui.drawer
+package com.example.newmobileapp.presentation.ui.utils
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

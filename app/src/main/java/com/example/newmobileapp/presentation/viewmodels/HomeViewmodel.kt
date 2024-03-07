@@ -20,6 +20,11 @@ class HomeViewmodel() : ViewModel(), KoinComponent {
     private val _categories: MutableStateFlow<List<String>> = MutableStateFlow(listOf())
     val categories = _categories.asStateFlow()
 
+    val _loading: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    val loading = _loading.asStateFlow()
+    val _error: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    val error = _error.asStateFlow()
+
     private val remoterepo: RemoteRepoImplementaion by inject()
 
     private val cartViewmodel: CartViewmodel by inject()
@@ -34,7 +39,7 @@ class HomeViewmodel() : ViewModel(), KoinComponent {
 
     private fun getOnlineProducts() {
         viewModelScope.launch {
-            _products.value = remoterepo.getProducts().toMutableList()
+            _products.value = remoterepo.getOnlineProducts(_loading,_error).toMutableList()
         }
     }
 
@@ -83,5 +88,10 @@ class HomeViewmodel() : ViewModel(), KoinComponent {
 
     fun removeFromCart(cartProduct: CartProduct) {
         coreViewmodel.removeFromCart(cartProduct)
+    }
+
+    fun refresh() {
+        getOnlineProducts()
+        getCategories()
     }
 }
