@@ -6,6 +6,6 @@ sealed interface NetworkConnectionState {
     object Losing : NetworkConnectionState
     object Lost : NetworkConnectionState
 
- //   Available, Unavailable, Losing, Lost
+    //   Available, Unavailable, Losing, Lost
 
 }

@@ -3,23 +3,25 @@ package com.example.newmobileapp.presentation.ui.screens
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
@@ -27,6 +29,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +46,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.example.newmobileapp.domain.CartProduct
@@ -53,7 +56,6 @@ import com.example.newmobileapp.presentation.ui.components.Productcard
 import com.example.newmobileapp.presentation.ui.utils.Drawer
 import com.example.newmobileapp.presentation.ui.utils.LoadingUtil
 import com.example.newmobileapp.presentation.viewmodels.HomeViewmodel
-
 import com.example.newmobileapp.util.NavActions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,6 +63,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.compose.rememberKoinInject
 
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedContentLambdaTargetStateParameter")
 @Composable
 fun HomeScreen(
@@ -118,47 +121,47 @@ fun HomeScreen(
                         }
                         AnimatedContent(targetState = loadingError, label = "") {
                             if (it) {
-                                Box(
+
+                                Column(
                                     modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
 
-                                    Column(modifier = Modifier.fillMaxWidth(),verticalArrangement = Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally) {
-
-                                        Text(text = "Network error tap to retry")
-//                                        Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Center) {
-                                            IconButton(onClick = { viewmodel.refresh() }) {
-                                                Icon(
-                                                    imageVector = Icons.Default.Refresh,
-                                                    contentDescription = "Refresh"
-                                                )
-                                            }
-  //                                      }
-
+                                    Text(text = "Oops, there was a problem loading. Tap to retry ")
+                                    IconButton(onClick = { viewmodel.refresh() }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Refresh,
+                                            contentDescription = "Refresh"
+                                        )
                                     }
-
                                 }
+
+
                             } else {
-                                Box(
+                                Column(
                                     modifier = Modifier
-                                        .weight(0.1f)
-                                        .padding(8.dp)
+                                        .fillMaxSize()
+                                        .padding(vertical = 8.dp),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
+
                                     Row(
                                         modifier = Modifier
-                                            .wrapContentHeight()
+                                            .wrapContentSize()
                                             .horizontalScroll(
                                                 scrollState
-                                            )
+                                            ), horizontalArrangement = Arrangement.spacedBy(8.dp)
                                     ) {
                                         OutlinedButton(
                                             onClick = {
                                                 activeCategories.clear()
 
-                                            }, colors = ButtonDefaults.buttonColors(
+                                            },
+                                            colors = ButtonDefaults.buttonColors(
                                                 containerColor = if (!activeCategories.isEmpty()) MaterialTheme.colorScheme.surface
                                                 else MaterialTheme.colorScheme.outline
-                                            ), modifier = Modifier.padding(10.dp)
+                                            ), //modifier = Modifier.padding(10.dp)
                                         ) {
                                             Text(
                                                 text = "All categories",
@@ -172,13 +175,14 @@ fun HomeScreen(
                                                         category
                                                     )
                                                     else activeCategories.add(category)
-                                                }, colors = ButtonDefaults.buttonColors(
+                                                },
+                                                colors = ButtonDefaults.buttonColors(
                                                     containerColor = if (!activeCategories.contains(
                                                             category
                                                         )
                                                     ) MaterialTheme.colorScheme.surface
                                                     else MaterialTheme.colorScheme.outline
-                                                ), modifier = Modifier.padding(10.dp)
+                                                ), //modifier = Modifier.padding(10.dp)
                                             ) {
                                                 Text(
                                                     text = category,
@@ -187,29 +191,39 @@ fun HomeScreen(
                                             }
                                         }
                                     }
-                                }
 
-                                LazyColumn(
-                                    modifier = Modifier.weight(1f),
-                                    verticalArrangement = Arrangement.Top,
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                ) {
+                                    LazyColumn(
+                                        modifier = Modifier.fillMaxSize(),
+                                        verticalArrangement = Arrangement.Top,
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                    ) {
 
-                                    items(products.filter { product ->
-                                        activeCategories.contains(
-                                            product.category
-                                        ) or activeCategories.isEmpty()
-                                    }, key = { product -> product.id }) { product ->
-                                        HomeScreenProductCard(product = product,
-                                            onAddClick = fun() {
-                                                viewmodel.addToCart(CartProduct(product.id))
-                                            },
-                                            onRemoveClick = fun() {
-                                                viewmodel.removeFromCart(CartProduct(product.id))
-                                            },
-                                            onFavoritesClick = fun() {
-                                                viewmodel.changeProductFavoriteState(product.id)
-                                            })
+
+                                        items(products.filter { product ->
+                                            activeCategories.contains(
+                                                product.category
+                                            ) or activeCategories.isEmpty()
+                                        }, key = { product -> product.id }) { product ->
+                                            Row(
+                                                modifier = Modifier.animateItemPlacement(
+                                                    tween(durationMillis = 250)
+                                                )
+                                            ) {
+                                                HomeScreenProductCard(product = product,
+                                                    onAddClick = fun() {
+                                                        viewmodel.addToCart(CartProduct(product.id))
+                                                    },
+                                                    onRemoveClick = fun() {
+                                                        viewmodel.removeFromCart(CartProduct(product.id))
+                                                    },
+                                                    onFavoritesClick = fun() {
+                                                        viewmodel.changeProductFavoriteState(product.id)
+                                                    })
+                                            }
+                                            Spacer(modifier = Modifier.height(2.dp))
+                                        }
+
+
                                     }
 
 
@@ -238,20 +252,24 @@ fun HomeScreenProductCard(
 ) {
     Box(
         modifier = Modifier
-            .height(250.dp)
             .fillMaxWidth()
-            .padding(bottom = 8.dp)
+            .fillMaxHeight(0.25f)
+            .animateContentSize(),
+        contentAlignment = Alignment.BottomEnd
     ) {
         Productcard(
             product = product,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             onFavoriteButtonClicked = onFavoritesClick
         )
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Bottom
+        Row(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End
+
         ) {
 
             val controlSpecs: Triple<ImageVector, String, () -> Unit> =
@@ -260,29 +278,27 @@ fun HomeScreenProductCard(
                 )
                 else Triple(Icons.Default.Add, "add to cart", onAddClick)
 
-            OutlinedButton(
-                onClick = controlSpecs.third, modifier = Modifier
+
+            ElevatedButton(
+                onClick = controlSpecs.third,
+                modifier = Modifier
                     .wrapContentSize()
-                    .animateContentSize()
+                    .height(30.dp)
+                    .animateContentSize(),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                contentPadding = PaddingValues(vertical = 0.dp, horizontal = 4.dp),
+                border = BorderStroke(0.dp, Color.Transparent)
             ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Box(
-                        modifier = Modifier
-                            .size(25.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary)
-                            .padding(4.dp),
-                    ) {
-                        Icon(
-                            imageVector = controlSpecs.first,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
+                Icon(
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .fillMaxHeight(0.6f),
+                    imageVector = controlSpecs.first,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+                Text(modifier = Modifier.padding(horizontal = 8.dp), text = controlSpecs.second)
 
-                    }
-                    Text(text = controlSpecs.second)
-
-                }
 
             }
 

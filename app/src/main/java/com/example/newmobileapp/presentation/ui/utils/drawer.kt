@@ -1,7 +1,12 @@
 package com.example.newmobileapp.presentation.ui.utils
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -57,7 +62,7 @@ fun Drawer(
             NavigationDrawerItem(
                 icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "Home icon") },
                 label = {
-                        Text(text = "Home")
+                    Text(text = "Home")
                 },
                 selected = currentRoute == NavRoutes.HOME,
                 onClick = {
@@ -83,7 +88,7 @@ fun Drawer(
                     closeLeftDrawer()
                 },
                 shape = RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp),
-                badge = { Text(text =itemsInCart.size.toString()) },
+                badge = { Text(text = itemsInCart.size.toString()) },
                 modifier = Modifier.padding(end = 16.dp, top = 12.dp, bottom = 12.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))

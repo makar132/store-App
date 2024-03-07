@@ -4,10 +4,8 @@ import com.example.newmobileapp.data.mappers.toProduct
 import com.example.newmobileapp.data.remote.API.CartApi
 import com.example.newmobileapp.data.remote.API.categoryApi
 import com.example.newmobileapp.data.remote.API.productsApi
-import com.example.newmobileapp.domain.Product
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class RemoteRepoImplementaion(
@@ -38,7 +36,7 @@ class RemoteRepoImplementaion(
             }
 
         }.apply {
-            loadingState.value=false
+            loadingState.value = false
         }
 
 

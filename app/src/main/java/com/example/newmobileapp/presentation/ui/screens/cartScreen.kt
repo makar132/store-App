@@ -1,23 +1,21 @@
 package com.example.newmobileapp.presentation.ui.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -95,7 +93,7 @@ fun CartScreen(
                 Box()
                 {
                     LazyColumn(
-                        verticalArrangement = Arrangement.Bottom,
+                        verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.CenterHorizontally,
 
                         ) {
@@ -129,23 +127,41 @@ fun CartScreenProductCard(
 
     Box(
         modifier = Modifier
-            .height(250.dp)
-            .fillMaxWidth()
+            .wrapContentSize()
+            .animateContentSize(),
+        contentAlignment = Alignment.BottomEnd
     ) {
-        if (product != null)
-            Productcard(
-                product = product,
-                modifier = Modifier.fillMaxWidth(), onFavoriteButtonClicked = onFavoriteClick
-            )
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            OutlinedButton(onClick = onClick, modifier = Modifier.width(250.dp)) {
-                Text(text = "remove from cart")
+        if (product != null) {
+            Column {
+                Row {
+                    Productcard(
+                        product = product,
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .fillMaxWidth(),
+                        onFavoriteButtonClicked = onFavoriteClick
+                    )
+                }
+
+
+                Row {
+                    OutlinedButton(
+                        shape = RoundedCornerShape(8.dp),
+                        onClick = onClick,
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        )
+                    ) {
+                        Text(text = "remove from cart")
+                    }
+                }
             }
         }
+
 
     }
 

@@ -1,8 +1,8 @@
 package com.example.newmobileapp.data.remote.DTO.product
 
-import com.example.newmobileapp.data.remote.DTO.product.Rating
+import com.example.newmobileapp.domain.Rating
 
-data class ProductDTO (
+data class ProductDTO(
     val id: Int,
     val title: String,
     val price: Double,

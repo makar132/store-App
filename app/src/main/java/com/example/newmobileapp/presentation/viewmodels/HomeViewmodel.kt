@@ -39,7 +39,7 @@ class HomeViewmodel() : ViewModel(), KoinComponent {
 
     private fun getOnlineProducts() {
         viewModelScope.launch {
-            _products.value = remoterepo.getOnlineProducts(_loading,_error).toMutableList()
+            _products.value = remoterepo.getOnlineProducts(_loading, _error).toMutableList()
         }
     }
 

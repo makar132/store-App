@@ -22,11 +22,11 @@ class NavActions(private val navHostController: NavHostController) {
         }
     }
     val navigateToDetails: (Int) -> Unit = {
-        navController.navigate(NavRoutes.PRODUCT_DETAIL+it)
+        navController.navigate(NavRoutes.PRODUCT_DETAIL + it)
 
     }
     val navigateToCart: () -> Unit = {
-        navController.navigate(NavRoutes.CART){
+        navController.navigate(NavRoutes.CART) {
             popUpTo(NavRoutes.HOME)
         }
 

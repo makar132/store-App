@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.stateIn
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class NetworkStateViewModel:ViewModel(),KoinComponent {
+class NetworkStateViewModel : ViewModel(), KoinComponent {
 
-    private val networkUtils :NetworkUtils by inject()
-    val networkState: StateFlow<NetworkConnectionState> =networkUtils.getNetworkState().stateIn(
+    private val networkUtils: NetworkUtils by inject()
+    val networkState: StateFlow<NetworkConnectionState> = networkUtils.getNetworkState().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(3000),
-        initialValue = NetworkConnectionState.Lost
+        initialValue = NetworkConnectionState.Available
     )
 
 }
