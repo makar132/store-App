@@ -10,7 +10,7 @@ class StoreApp : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@StoreApp)
-            appModules
+            modules(appModules)
         }
     }
 }
